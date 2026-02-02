@@ -5,13 +5,23 @@
   "license": "MIT",
   "author": "Omkar Sathe",
   "type": "module",
-  "main": "index.js",
   "bin": {
-    "create-forge-app": "./index.js"
+    "stack-forge-create-app": "./dist/bin/index.js"
   },
   "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsx bin/index.ts",
+    "build": "tsc",
+    "start": "node dist/bin/index.js"
   },
-  "dependencies": {}
+  "dependencies": {
+    "commander": "^14.0.3",
+    "prompts": "^2.4.2"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.0",
+    "@types/prompts": "^2.4.9",
+    "tsc-alias": "^1.8.16",
+    "tsx": "^4.19.2",
+    "typescript": "^5.9.3"
+  }
 }
