@@ -1,15 +1,15 @@
 export function validateProjectName(name: string): string | true {
-  const trimmed = name.trim();
+  const trimmed = name?.trim();
 
   if (!trimmed) return "Project name cannot be empty";
 
-  if (trimmed === "." || trimmed === "..")
-    return "Project name cannot be '.' or '..'";
+  if (trimmed.includes(".") || trimmed.includes(".."))
+    return "Project name cannot contain '.' or '..'";
 
-  // npm-safe regex: lowercase letters, numbers, hyphens, underscores
-  const npmSafe = /^[a-z0-9-_]+$/i;
-  if (!npmSafe.test(trimmed))
-    return "Project name must contain only letters, numbers, '-' or '_'";
+  // block path-breaking characters (safe for all OS)
+  const invalidChars = /[<>:"/\\|?*\x00-\x1F]/;
+  if (invalidChars.test(trimmed))
+    return "Project name contains invalid characters";
 
   const reserved = ["node_modules", "favicon.ico"];
   if (reserved.includes(trimmed.toLowerCase()))

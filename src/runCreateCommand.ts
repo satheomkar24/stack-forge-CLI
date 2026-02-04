@@ -1,23 +1,21 @@
-import { createProject } from "./generator/react/createProject.js";
+import { createReactProject } from "./generator/react/createProject.js";
 import { ParsedConfig } from "./types.js";
 
-type NormalizedConfig = {
-  stack: string;
-  version?: number;
-  variants: string[];
-  projectName: string;
-};
-
 export async function runCreateCommand(config: ParsedConfig) {
-  const { stack, version, variant, projectName } = config;
+  const { stack, version, variant, projectName, groupId, targetDir } = config;
 
-  if (stack === "react") {
-    await createProject({
-      name: projectName,
-      target: `react@${version ?? 18}`,
-      variants: [variant],
-    });
-    return;
+  switch (stack) {
+    case "react":
+      await createReactProject({
+        name: projectName,
+        target: `react@${version ?? 18}`,
+        variants: [variant],
+        targetDir,
+      });
+      return;
+
+    default:
+      break;
   }
 
   // future

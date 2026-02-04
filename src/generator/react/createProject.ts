@@ -7,6 +7,9 @@ import { mergeVariant } from "./mergeVariant.js";
 import { generateRoutesIndex } from "./generateRoutesIndex.js";
 import { resolveReactVersion } from "./resolveReactVersion.js";
 import { updatePackageJson } from "./updatePackageJson.js";
+import { resolveTemplatePath } from "../../utils/resolveTemplatePath.js";
+import { log, logStep } from "../../utils/logger.js";
+import { isDirEmpty } from "../../utils/directoryCheck.js";
 
 function resolveVariants(input: string[]) {
   const set = new Set(["base"]);
@@ -20,29 +23,51 @@ function resolveVariants(input: string[]) {
   return Array.from(set) as ("base" | "auth" | "admin")[];
 }
 
-export async function createProject({
+export async function createReactProject({
   name,
   target,
   variants,
+  targetDir,
 }: {
   name: string;
   target: string;
   variants: string[];
+  targetDir: string;
 }) {
-  const projectPath = path.resolve(name);
+  logStep(2, "Creating project directory");
+
+  const projectPath = path.resolve(targetDir);
+  const isCurrentDir = projectPath === process.cwd();
 
   if (fs.existsSync(projectPath)) {
-    throw new Error("Folder already exists");
+    if (!isCurrentDir) {
+      throw new Error(
+        "Folder already exists\n\n👉 Choose a different name or delete the folder.",
+      );
+    }
+
+    if (!isDirEmpty(projectPath)) {
+      throw new Error(
+        "Current directory is not empty\n\n👉 Use an empty folder or choose a different project name.",
+      );
+    }
+  } else {
+    await fs.mkdir(projectPath, { recursive: true });
   }
 
   const { framework, major } = parseTarget(target);
   const finalVariants = resolveVariants(variants);
 
-  await copyBaseTemplate(`templates/${framework}/base`, projectPath);
+  const basePath = resolveTemplatePath(`${framework}/base`);
+
+  logStep(3, "Copying template files");
+
+  await copyBaseTemplate(basePath, projectPath);
 
   for (const v of finalVariants) {
     if (v !== "base") {
-      await mergeVariant(`templates/${framework}/${v}`, projectPath);
+      const variantPath = resolveTemplatePath(`${framework}/${v}`);
+      await mergeVariant(variantPath, projectPath);
     }
   }
 
@@ -65,5 +90,32 @@ Otherwise, you may need to manually adjust dependency versions.
 `);
   }
 
-  await updatePackageJson(projectPath, reactVersion);
+  logStep(4, "Updating package name");
+
+  await updatePackageJson(projectPath, name, reactVersion);
+
+  logStep(5, "Finalizing setup");
+
+  const cdCommand = isCurrentDir ? "." : name;
+
+  log.success(`
+🎉 Project created successfully!
+
+Next steps:
+
+1️⃣  Move into your project:
+   cd ${cdCommand}
+
+2️⃣  Rename environment file:
+   mv .template.env .env
+   (Update values inside .env as needed)
+
+3️⃣  Install dependencies:
+   npm install
+
+4️⃣  Start development server:
+   npm run dev
+
+Happy hacking 🚀
+`);
 }

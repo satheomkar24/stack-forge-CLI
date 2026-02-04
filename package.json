@@ -1,19 +1,22 @@
 {
-  "name": "stack-forge-create-app",
+  "name": "@stackboot/cli",
   "version": "1.0.0",
   "description": "Multi-stack project generator CLI",
   "license": "MIT",
   "author": "Omkar Sathe",
   "type": "module",
   "bin": {
-    "stack-forge-create-app": "./dist/bin/index.js"
+    "stackboot": "./dist/bin/index.js"
   },
   "scripts": {
+    "clean": "rimraf dist",
     "dev": "tsx bin/index.ts",
-    "build": "tsc",
-    "start": "node dist/bin/index.js"
+    "build": "npm run clean && tsc",
+    "start": "node dist/bin/index.js",
+    "prepublishOnly": "npm run clean && npm run build"
   },
   "dependencies": {
+    "chalk": "^5.6.2",
     "commander": "^14.0.3",
     "fs-extra": "^11.3.3",
     "prompts": "^2.4.2"
@@ -22,8 +25,13 @@
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^25.2.0",
     "@types/prompts": "^2.4.9",
+    "rimraf": "^6.1.2",
     "tsc-alias": "^1.8.16",
     "tsx": "^4.19.2",
     "typescript": "^5.9.3"
-  }
+  },
+  "files": [
+    "dist",
+    "templates"
+  ]
 }

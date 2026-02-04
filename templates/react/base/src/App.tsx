@@ -1,5 +1,5 @@
 import { RouterProvider } from "react-router-dom";
-import routes from "./routes";
+import router from "./routes/index";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import { SpinnerContextProvider } from "./context/provider/SpinnerContextProvider";
@@ -12,7 +12,7 @@ const App = () => {
       <Toaster />
       <QueryClientProvider client={queryClient}>
         <SpinnerContextProvider>
-          <RouterProvider router={routes} />
+          <RouterProvider router={router} />
           <Spinner />
         </SpinnerContextProvider>
       </QueryClientProvider>

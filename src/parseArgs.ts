@@ -3,14 +3,15 @@ export interface PartialInput {
   version?: string;
   variant?: string;
   projectName?: string;
+  groupId?: string;
   isComplete: boolean;
 }
 
 export function parseArgs(args: string[]): PartialInput {
-  const [stackVersion, variant, projectName] = args;
+  const [stackVersion, projectName, variant] = args;
 
   let stack: string | undefined;
-  let version = "latest";
+  let version: string | undefined;
 
   if (stackVersion) {
     const [s, v] = stackVersion.split("@");
@@ -24,8 +25,9 @@ export function parseArgs(args: string[]): PartialInput {
   return {
     stack,
     version,
-    variant: variant ?? "base",
     projectName,
+    variant: stack === "react" ? variant : undefined,
+    groupId: stack === "java" ? variant : undefined,
     isComplete: Boolean(stack && projectName),
   };
 }

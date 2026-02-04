@@ -29,7 +29,9 @@ const routes = [
   ${spreads.join(",\n  ")}
 ]
 
-export const router = createBrowserRouter(routes)
+const router = createBrowserRouter(routes)
+
+export default router;
 `;
 
   await fs.outputFile(

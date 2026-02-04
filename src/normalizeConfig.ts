@@ -6,6 +6,7 @@ interface NormalizeInput {
   version?: string;
   variant?: string;
   projectName: string;
+  groupId?: string;
 }
 
 export function normalizeConfig(
@@ -16,8 +17,9 @@ export function normalizeConfig(
 
   return {
     stack: input.stack,
-    version: input.version ?? "latest",
+    version: input.version ?? "18",
     variant: input.variant ?? "base",
+    groupId: input.groupId ?? "com.example",
     projectName,
     targetDir,
     mode,

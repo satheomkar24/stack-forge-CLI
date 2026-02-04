@@ -7,4 +7,5 @@ export type ParsedConfig = {
   projectName: string;
   targetDir: string;
   mode: InputMode;
+  groupId?: string;
 };
