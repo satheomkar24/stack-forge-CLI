@@ -15,9 +15,7 @@ export async function runCreateCommand(config: ParsedConfig) {
       break;
 
     default:
-      break;
+      // future
+      throw new Error(`Framework "${stack}" is not supported yet.`);
   }
-
-  // future
-  throw new Error(`Framework "${stack}" is not supported yet.`);
 }

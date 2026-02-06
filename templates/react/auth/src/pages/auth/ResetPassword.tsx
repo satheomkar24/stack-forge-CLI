@@ -2,7 +2,7 @@ import type { IResetPassword } from "../../types/auth";
 import { authService } from "../../services/authService";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import { ResetPasswordForm } from "../../../../admin/src/components/auth/ResetPassword";
+import { ResetPasswordForm } from "../../components/auth/ResetPassword";
 
 const ResetPassword = () => {
   const { token } = useParams<{ token: string }>();

@@ -1,8 +1,8 @@
-import type { ILogin } from "../../../../base/src/types/auth";
+import type { ILogin } from "../../types/auth";
 import { authService } from "../../services/authService";
-import { useAppDispatch } from "../../../../base/src/hooks/redux";
-import { setAuth } from "../../../../base/src/store/authSlice";
-import { storageService } from "../../../../base/src/services/storageService";
+import { useAppDispatch } from "../../hooks/redux";
+import { setAuth } from "../../store/authSlice";
+import { storageService } from "../../services/storageService";
 import { LoginForm } from "../../components/auth/Login";
 
 const Register = () => {

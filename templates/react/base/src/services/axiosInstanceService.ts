@@ -4,7 +4,7 @@ import axios, {
   type AxiosResponse,
 } from "axios";
 import { storageService } from "./storageService";
-import type { IAuthTokens } from "../../../auth/src/types/auth";
+import type { IAuthTokens } from "../types/auth";
 
 export class AxiosInstanceService {
   private api: AxiosInstance;

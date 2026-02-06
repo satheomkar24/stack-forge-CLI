@@ -6,7 +6,7 @@ import type {
   IResetPassword,
 } from "../types/auth";
 import * as Yup from "yup";
-import { regex } from "../../../base/src/utils/regex";
+import { regex } from "../utils/regex";
 
 export const registerInitialValues: IRegister = {
   name: "",

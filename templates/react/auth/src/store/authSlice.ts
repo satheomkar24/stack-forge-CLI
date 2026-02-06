@@ -1,8 +1,8 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { IUser } from "../types/auth";
+import type { IUserAuth } from "../types/auth";
 import { storageService } from "../services/storageService";
 
-const localUser = storageService.getLocal<IUser>("userData");
+const localUser = storageService.getLocal<IUserAuth>("userData");
 const initialState = {
   user: localUser,
 };

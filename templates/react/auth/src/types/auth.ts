@@ -41,7 +41,7 @@ export type IChangePasswordPayload = Omit<
   "confirmNewPassword"
 >;
 
-export type IUser = {
+export type IUserAuth = {
   id: string;
   name: string;
   email: string;
@@ -53,5 +53,5 @@ export type IAuthTokens = {
   refreshToken: string;
 };
 export type IAuthResponse = IAuthTokens & {
-  user: IUser;
+  user: IUserAuth;
 };

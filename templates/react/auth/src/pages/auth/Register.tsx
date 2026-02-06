@@ -1,6 +1,6 @@
 import type { IRegister } from "../../types/auth";
 import { authService } from "../../services/authService";
-import { RegisterForm } from "../../../../admin/src/components/auth/Register";
+import { RegisterForm } from "../../components/auth/Register";
 
 const Register = () => {
   const handleSubmit = async (values: IRegister) => {

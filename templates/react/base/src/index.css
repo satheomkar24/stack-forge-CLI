@@ -2,11 +2,31 @@
 @import url(/css/main.css);
 
 :root {
+  --orange: #f37739;
+  --blue: #066ccb;
+  --dark-blue: #004e97;
+  --main-bg-color: #e8f2fd;
   --font-family: "Inter", sans-serif;
 }
 
 body {
   font-family: var(--font-family);
+}
+
+.primary-orange {
+  color: var(--orange) !important;
+}
+.primary-blue {
+  color: var(--blue) !important;
+}
+.bg-primary-orange {
+  background-color: var(--orange);
+}
+.bg-primary-blue {
+  background-color: var(--blue);
+}
+.bg-primary-main {
+  background-color: var(--main-bg-color);
 }
 
 a {
@@ -23,4 +43,8 @@ p {
 
 .form-control {
   box-shadow: none !important;
+}
+
+.navbar .active {
+  color: var(--orange);
 }

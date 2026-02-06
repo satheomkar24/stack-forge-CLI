@@ -12,6 +12,7 @@ import { log, logStep } from "../../utils/logger.js";
 import { isDirEmpty } from "../../utils/directoryCheck.js";
 import { updateReadme } from "../../utils/updateReadme.js";
 import { updateHtmlTitle } from "../../utils/updateHtmlTitle.js";
+import { setupEnvFile } from "../../utils/setupEnvFile.js";
 
 function resolveVariants(input: string[]) {
   const set = new Set(["base"]);
@@ -73,6 +74,7 @@ export async function createReactProject({
 
   // await generateRoutesIndex(projectPath, finalVariants);
 
+  logStep(4, "Resolving React version");
   const reactVersion = await resolveReactVersion(major);
 
   if (major !== 18) {
@@ -90,18 +92,19 @@ Otherwise, you may need to manually adjust dependency versions.
 `);
   }
 
-  logStep(4, "Updating package name");
+  logStep(5, "Updating package name");
   await updatePackageJson(projectPath, name, reactVersion);
 
-  logStep(5, "Updating HTML title");
+  logStep(6, "Updating HTML title");
   const indexHtmlPath = path.join(projectPath, "index.html");
   await updateHtmlTitle(indexHtmlPath, name);
 
-  logStep(6, "Updating README.md");
+  logStep(7, "Updating README.md");
   const readmePath = path.join(projectPath, "README.md");
   await updateReadme(readmePath, name);
 
-  logStep(7, "Finalizing setup");
+  logStep(8, "Finalizing setup");
+  await setupEnvFile(projectPath);
   const cdCommand = isCurrentDir ? "." : name;
 
   log.success(`
@@ -112,9 +115,8 @@ Next steps:
 1️⃣  Move into your project:
    cd ${cdCommand}
 
-2️⃣  Rename environment file:
-   mv .template.env .env
-   (Update values inside .env as needed)
+2️⃣  Environment file ready
+   ✏️  Update values inside .env as needed
 
 3️⃣  Install dependencies:
    npm install

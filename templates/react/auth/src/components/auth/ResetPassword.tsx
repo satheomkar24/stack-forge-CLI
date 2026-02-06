@@ -1,4 +1,4 @@
-import { SpinnerContext } from "../../../../base/src/context/SpinnerContext";
+import { SpinnerContext } from "../../context/SpinnerContext";
 import {
   resetPasswordInitialValues,
   resetPasswordValidationSchema,
@@ -6,9 +6,9 @@ import {
 import {
   type IFormRender,
   renderFieldRowWithSizes,
-} from "../../../../base/src/utils/formFieldRender";
-import { showError } from "../../../../base/src/utils/showError";
-import type { IResetPassword } from "../../../../base/src/types/auth";
+} from "../../utils/formFieldRender";
+import { showError } from "../../utils/showError";
+import type { IResetPassword } from "../../types/auth";
 import { Form, Formik, type FormikHelpers, type FormikProps } from "formik";
 import { useContext } from "react";
 import toast from "react-hot-toast";

@@ -1,5 +1,5 @@
-import { storageService } from "../../../base/src/services/storageService";
-import type { IUser } from "../../../base/src/types/auth";
+import { storageService } from "../services/storageService";
+import type { IUserAuth } from "../types/auth";
 import { type ReactNode, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -8,7 +8,7 @@ type PropTypes = {
 };
 
 export const AuthGuard = ({ children }: PropTypes) => {
-  const userData = storageService.getLocal<IUser>("userData");
+  const userData = storageService.getLocal<IUserAuth>("userData");
   const accessToken = storageService.getLocal<string>("accessToken");
   const navigate = useNavigate();
 

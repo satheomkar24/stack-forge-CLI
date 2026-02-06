@@ -1,7 +1,7 @@
 import { type ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { storageService } from "../../../base/src/services/storageService";
-import type { IUser } from "../types/auth";
+import { storageService } from "../services/storageService";
+import type { IUserAuth } from "../types/auth";
 
 type PropTypes = {
   children: ReactNode;
@@ -9,7 +9,7 @@ type PropTypes = {
 
 //if already login and come to auth route, redirect to the home page
 export const AuthRouteRedirect = ({ children }: PropTypes) => {
-  const userData = storageService.getLocal<IUser>("userData");
+  const userData = storageService.getLocal<IUserAuth>("userData");
   const location = useLocation();
 
   const isResetRoute = location.pathname.includes("reset");
