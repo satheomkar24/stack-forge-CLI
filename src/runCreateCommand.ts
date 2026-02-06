@@ -9,7 +9,7 @@ export async function runCreateCommand(config: ParsedConfig) {
       await createReactProject({
         name: projectName,
         target: `react@${version ?? 18}`,
-        variants: [variant],
+        variant,
         targetDir,
       });
       break;

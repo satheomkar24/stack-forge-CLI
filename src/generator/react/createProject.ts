@@ -4,7 +4,6 @@ import fs from "fs-extra";
 import { parseTarget } from "../../utils/parseTarget.js";
 import { copyBaseTemplate } from "./copyBaseTemplate.js";
 import { mergeVariant } from "./mergeVariant.js";
-// import { generateRoutesIndex } from "./generateRoutesIndex.js";
 import { resolveReactVersion } from "./resolveReactVersion.js";
 import { updatePackageJson } from "./updatePackageJson.js";
 import { resolveTemplatePath } from "../../utils/resolveTemplatePath.js";
@@ -14,11 +13,25 @@ import { updateReadme } from "../../utils/updateReadme.js";
 import { updateHtmlTitle } from "../../utils/updateHtmlTitle.js";
 import { setupEnvFile } from "../../utils/setupEnvFile.js";
 
-function resolveVariants(input: string[]) {
+const AVAILABLE_VARIANTS = ["base", "auth", "admin"] as const;
+type Variant = (typeof AVAILABLE_VARIANTS)[number];
+
+function verifyVariantName(variant: string) {
+  const invalid = !AVAILABLE_VARIANTS.includes(variant as Variant);
+
+  if (invalid) {
+    const available = AVAILABLE_VARIANTS.map((v) => `"${v}"`).join(", ");
+    throw new Error(
+      `Invalid variant: ${variant}.\n` + `  Available variants: ${available}`,
+    );
+  }
+}
+
+function resolveVariants(input: string) {
   const set = new Set(["base"]);
 
-  if (input.includes("auth")) set.add("auth");
-  if (input.includes("admin")) {
+  if (input === "auth") set.add("auth");
+  if (input === "admin") {
     set.add("auth");
     set.add("admin");
   }
@@ -29,15 +42,18 @@ function resolveVariants(input: string[]) {
 export async function createReactProject({
   name,
   target,
-  variants,
+  variant,
   targetDir,
 }: {
   name: string;
   target: string;
-  variants: string[];
+  variant: string;
   targetDir: string;
 }) {
-  logStep(2, "Creating project directory");
+  logStep(2, "Validating variant name");
+  verifyVariantName(variant);
+
+  logStep(3, "Creating project directory");
   const projectPath = path.resolve(targetDir);
   const isCurrentDir = projectPath === process.cwd();
 
@@ -58,11 +74,11 @@ export async function createReactProject({
   }
 
   const { framework, major } = parseTarget(target);
-  const finalVariants = resolveVariants(variants);
+  const finalVariants = resolveVariants(variant);
 
   const basePath = resolveTemplatePath(`${framework}/base`);
 
-  logStep(3, "Copying template files");
+  logStep(4, "Copying template files");
   await copyBaseTemplate(basePath, projectPath);
 
   for (const v of finalVariants) {
@@ -72,9 +88,7 @@ export async function createReactProject({
     }
   }
 
-  // await generateRoutesIndex(projectPath, finalVariants);
-
-  logStep(4, "Resolving React version");
+  logStep(5, "Resolving React version");
   const reactVersion = await resolveReactVersion(major);
 
   if (major !== 18) {
@@ -92,18 +106,18 @@ Otherwise, you may need to manually adjust dependency versions.
 `);
   }
 
-  logStep(5, "Updating package name");
+  logStep(6, "Updating package name");
   await updatePackageJson(projectPath, name, reactVersion);
 
-  logStep(6, "Updating HTML title");
+  logStep(7, "Updating HTML title");
   const indexHtmlPath = path.join(projectPath, "index.html");
   await updateHtmlTitle(indexHtmlPath, name);
 
-  logStep(7, "Updating README.md");
+  logStep(8, "Updating README.md");
   const readmePath = path.join(projectPath, "README.md");
   await updateReadme(readmePath, name);
 
-  logStep(8, "Finalizing setup");
+  logStep(9, "Finalizing setup");
   await setupEnvFile(projectPath);
   const cdCommand = isCurrentDir ? "." : name;
 
