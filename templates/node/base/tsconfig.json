@@ -1,0 +1,54 @@
+{
+  "compilerOptions": {
+    /* File Layout */
+    "rootDir": "./src",
+    "outDir": "./dist",
+
+    /* Node ESM */
+    // ===== Module System =====
+    "target": "ES2022", // Reasonable modern JS target
+    "module": "ESNext", // Modern Node module system (supports ESM)
+    "moduleResolution": "node",
+
+    /* Platform */
+    "lib": ["ES2022"],
+    "types": ["node"],
+
+    /* Interop */
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    /* Strictness */
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+
+    /* Module Safety */
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+
+    /* Build */
+    "sourceMap": true,
+    "skipLibCheck": true,
+
+    /* Quality */
+    "forceConsistentCasingInFileNames": true,
+
+    /* Paths */
+    "baseUrl": "./src",
+    "paths": {
+      "@config/*": ["config/*"],
+      "@controllers/*": ["controllers/*"],
+      "@enums/*": ["enums/*"],
+      "@middlewares/*": ["middlewares/*"],
+      "@models/*": ["models/*"],
+      "@modules/*": ["modules/*"],
+      "@routes/*": ["routes/*"],
+      "@services/*": ["services/*"],
+      "@utils/*": ["utils/*"]
+    }
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}
